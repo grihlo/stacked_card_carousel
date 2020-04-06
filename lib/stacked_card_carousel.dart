@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class StackedCardCarousel extends StatefulWidget {
-  StackedCardCarousel({
+  const StackedCardCarousel({
     @required List<Widget> items,
     StackedCardCarouselType type = StackedCardCarouselType.cardsStack,
   })  : _items = items,
@@ -20,8 +20,8 @@ class StackedCardCarousel extends StatefulWidget {
 }
 
 class _StackedCardCarouselState extends State<StackedCardCarousel> {
-  var _pageController = PageController();
-  var _pageValue = 0.0;
+  final PageController _pageController = PageController();
+  double _pageValue = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,8 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
   }
 
   Widget _stackedCards(BuildContext context) {
-    List<Widget> _positionedCards = widget._items.asMap().entries.map((item) {
+    final List<Widget> _positionedCards =
+    widget._items.asMap().entries.map((MapEntry<int, Widget> item) {
       double position = 100.0;
       if (_pageValue < item.key) {
         position += (_pageValue - item.key) * 300;
@@ -61,8 +62,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
               child: Opacity(opacity: opacity, child: item.value));
         case StackedCardCarouselType.cardsStack:
         default:
-          return Positioned(
-              right: position - 10 * item.key, child: item.value);
+          return Positioned(right: position - 10 * item.key, child: item.value);
       }
     }).toList();
 
@@ -76,7 +76,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 // To allow all gestures detections to go through
 // https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
 class CustomStack extends Stack {
-  CustomStack({children}) : super(children: children);
+  CustomStack({List<Widget> children}) : super(children: children);
 
   @override
   CustomRenderStack createRenderObject(BuildContext context) {
@@ -90,23 +90,28 @@ class CustomStack extends Stack {
 }
 
 class CustomRenderStack extends RenderStack {
-  CustomRenderStack({alignment, textDirection, fit, overflow})
-      : super(
-            alignment: alignment,
-            textDirection: textDirection,
-            fit: fit,
-            overflow: overflow);
+  CustomRenderStack({
+    AlignmentGeometry alignment,
+    TextDirection textDirection,
+    StackFit fit,
+    Overflow overflow,
+  }) : super(
+      alignment: alignment,
+      textDirection: textDirection,
+      fit: fit,
+      overflow: overflow);
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
-    var stackHit = false;
+    bool stackHit = false;
 
-    final children = getChildrenAsList();
+    final List<RenderBox> children = getChildrenAsList();
 
-    for (var child in children) {
-      final StackParentData childParentData = child.parentData;
+    for (final RenderBox child in children) {
+      final StackParentData childParentData =
+      child.parentData as StackParentData;
 
-      final childHit = result.addWithPaintOffset(
+      final bool childHit = result.addWithPaintOffset(
         offset: childParentData.offset,
         position: position,
         hitTest: (BoxHitTestResult result, Offset transformed) {
@@ -115,7 +120,9 @@ class CustomRenderStack extends RenderStack {
         },
       );
 
-      if (childHit) stackHit = true;
+      if (childHit) {
+        stackHit = true;
+      }
     }
 
     return stackHit;
