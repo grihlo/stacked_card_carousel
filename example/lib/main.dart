@@ -30,6 +30,15 @@ class MyHomePage extends StatelessWidget {
     FancyCard(
       color: Colors.blue,
     ),
+    FancyCard(
+      color: Colors.red,
+    ),
+    FancyCard(
+      color: Colors.green,
+    ),
+    FancyCard(
+      color: Colors.purple,
+    ),
   ];
 
   @override
