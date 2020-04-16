@@ -6,35 +6,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class StackedCardCarousel extends StatefulWidget {
-  const StackedCardCarousel({
+  StackedCardCarousel({
     @required List<Widget> items,
     double initialOffset = 40.0,
     double spaceBetweenItems = 400.0,
     StackedCardCarouselType type = StackedCardCarouselType.fadeOutStack,
+    PageController controller,
+    OnPageChanged onPageChanged,
+    bool applyTextScaleFactor = true,
   })  : _items = items,
         _initialOffset = initialOffset,
         _spaceBetweenItems = spaceBetweenItems,
-        _type = type;
+        _type = type,
+        _onPageChanged = onPageChanged,
+        _controller = controller ?? _defaultPageController,
+        _applyTextScaleFactor = applyTextScaleFactor;
 
   final List<Widget> _items;
   final double _initialOffset;
   final double _spaceBetweenItems;
 
   final StackedCardCarouselType _type;
+  final OnPageChanged _onPageChanged;
+  final PageController _controller;
+  final bool _applyTextScaleFactor;
 
   @override
   _StackedCardCarouselState createState() => _StackedCardCarouselState();
 }
 
 class _StackedCardCarouselState extends State<StackedCardCarousel> {
-  final PageController _pageController = PageController();
   double _pageValue = 0.0;
 
   @override
   Widget build(BuildContext context) {
-    _pageController.addListener(() {
+    widget._controller.addListener(() {
       setState(() {
-        _pageValue = _pageController.page;
+        _pageValue = widget._controller.page;
       });
     });
 
@@ -42,7 +50,8 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
       _stackedCards(context),
       PageView.builder(
         scrollDirection: Axis.vertical,
-        controller: _pageController,
+        controller: widget._controller,
+        onPageChanged: widget._onPageChanged,
         itemCount: widget._items.length,
         itemBuilder: (context, index) {
           return Container();
@@ -52,13 +61,18 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
   }
 
   Widget _stackedCards(BuildContext context) {
+    double textScaleFactor = 1.0;
+    if (widget._applyTextScaleFactor) {
+      textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    }
+
     final List<Widget> _positionedCards = widget._items.asMap().entries.map(
       (MapEntry<int, Widget> item) {
         double position = -widget._initialOffset;
         if (_pageValue < item.key) {
           position += (_pageValue - item.key) *
-              widget
-                  ._spaceBetweenItems; // TODO(grisha): Add adaptable space (e.g factor * MediaQuery.of(context).textScaleFactor)
+              widget._spaceBetweenItems *
+              textScaleFactor;
         }
         switch (widget._type) {
           case StackedCardCarouselType.fadeOutStack:
@@ -175,7 +189,11 @@ class CustomRenderStack extends RenderStack {
   }
 }
 
+final PageController _defaultPageController = PageController();
+
 enum StackedCardCarouselType {
   cardsStack,
   fadeOutStack,
 }
+
+typedef OnPageChanged = void Function(int pageIndex);
