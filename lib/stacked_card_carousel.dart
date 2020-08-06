@@ -14,7 +14,8 @@ class StackedCardCarousel extends StatefulWidget {
     bool applyTextScaleFactor = true,
     PageController pageController,
     OnPageChanged onPageChanged,
-  })  : _items = items,
+  })  : assert(items != null && items.isNotEmpty),
+        _items = items,
         _type = type,
         _initialOffset = initialOffset,
         _spaceBetweenItems = spaceBetweenItems,
@@ -145,8 +146,8 @@ class ClickThroughStack extends Stack {
   ClickThroughStack({List<Widget> children}) : super(children: children);
 
   @override
-  CustomRenderStack createRenderObject(BuildContext context) {
-    return CustomRenderStack(
+  ClickThroughRenderStack createRenderObject(BuildContext context) {
+    return ClickThroughRenderStack(
       alignment: alignment,
       textDirection: textDirection ?? Directionality.of(context),
       fit: fit,
@@ -154,8 +155,8 @@ class ClickThroughStack extends Stack {
   }
 }
 
-class CustomRenderStack extends RenderStack {
-  CustomRenderStack({
+class ClickThroughRenderStack extends RenderStack {
+  ClickThroughRenderStack({
     AlignmentGeometry alignment,
     TextDirection textDirection,
     StackFit fit,
