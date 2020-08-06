@@ -8,28 +8,27 @@ import 'package:flutter/rendering.dart';
 class StackedCardCarousel extends StatefulWidget {
   StackedCardCarousel({
     @required List<Widget> items,
+    StackedCardCarouselType type = StackedCardCarouselType.cardsStack,
     double initialOffset = 40.0,
-    double spaceBetweenItems = 400.0,
-    StackedCardCarouselType type = StackedCardCarouselType.fadeOutStack,
-    PageController controller,
-    OnPageChanged onPageChanged,
+    double spaceBetweenItems = 400,
     bool applyTextScaleFactor = true,
+    PageController pageController,
+    OnPageChanged onPageChanged,
   })  : _items = items,
+        _type = type,
         _initialOffset = initialOffset,
         _spaceBetweenItems = spaceBetweenItems,
-        _type = type,
-        _onPageChanged = onPageChanged,
-        _controller = controller ?? _defaultPageController,
-        _applyTextScaleFactor = applyTextScaleFactor;
+        _applyTextScaleFactor = applyTextScaleFactor,
+        _pageController = pageController ?? _defaultPageController,
+        _onPageChanged = onPageChanged;
 
   final List<Widget> _items;
+  final StackedCardCarouselType _type;
   final double _initialOffset;
   final double _spaceBetweenItems;
-
-  final StackedCardCarouselType _type;
-  final OnPageChanged _onPageChanged;
-  final PageController _controller;
   final bool _applyTextScaleFactor;
+  final PageController _pageController;
+  final OnPageChanged _onPageChanged;
 
   @override
   _StackedCardCarouselState createState() => _StackedCardCarouselState();
@@ -40,30 +39,37 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    widget._controller.addListener(() {
-      setState(() {
-        _pageValue = widget._controller.page;
-      });
+    widget._pageController.addListener(() {
+      if (mounted) {
+        setState(() {
+          _pageValue = widget._pageController.page;
+        });
+      }
     });
 
-    return CustomStack(children: <Widget>[
-      _stackedCards(context),
-      PageView.builder(
-        scrollDirection: Axis.vertical,
-        controller: widget._controller,
-        onPageChanged: widget._onPageChanged,
-        itemCount: widget._items.length,
-        itemBuilder: (context, index) {
-          return Container();
-        },
-      ),
-    ]);
+    return ClickThroughStack(
+      children: <Widget>[
+        _stackedCards(context),
+        PageView.builder(
+          scrollDirection: Axis.vertical,
+          controller: widget._pageController,
+          itemCount: widget._items.length,
+          onPageChanged: widget._onPageChanged,
+          itemBuilder: (BuildContext context, int index) {
+            return Container();
+          },
+        ),
+      ],
+    );
   }
 
   Widget _stackedCards(BuildContext context) {
     double textScaleFactor = 1.0;
     if (widget._applyTextScaleFactor) {
-      textScaleFactor = MediaQuery.of(context).textScaleFactor;
+      final double mediaQueryFactor = MediaQuery.of(context).textScaleFactor;
+      if (mediaQueryFactor > 1.0) {
+        textScaleFactor = mediaQueryFactor;
+      }
     }
 
     final List<Widget> _positionedCards = widget._items.asMap().entries.map(
@@ -79,7 +85,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
             double opacity = 1.0;
             double scale = 1.0;
             if (item.key - _pageValue < 0) {
-              final factor = 1 + (item.key - _pageValue);
+              final double factor = 1 + (item.key - _pageValue);
               opacity = factor < 0.0 ? 0.0 : pow(factor, 1.5).toDouble();
               scale = factor < 0.0 ? 0.0 : pow(factor, 0.1).toDouble();
             }
@@ -104,7 +110,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
           default:
             double scale = 1.0;
             if (item.key - _pageValue < 0) {
-              final factor = 1 + (item.key - _pageValue);
+              final double factor = 1 + (item.key - _pageValue);
               scale = 0.95 + (factor * 0.1 / 2);
             }
             return Positioned.fill(
@@ -126,7 +132,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     ).toList();
 
     return Stack(
-        overflow: Overflow.visible,
+        overflow: Overflow.clip,
         alignment: Alignment.center,
         fit: StackFit.passthrough,
         children: _positionedCards);
@@ -135,8 +141,8 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 
 // To allow all gestures detections to go through
 // https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
-class CustomStack extends Stack {
-  CustomStack({List<Widget> children}) : super(children: children);
+class ClickThroughStack extends Stack {
+  ClickThroughStack({List<Widget> children}) : super(children: children);
 
   @override
   CustomRenderStack createRenderObject(BuildContext context) {
@@ -144,7 +150,6 @@ class CustomStack extends Stack {
       alignment: alignment,
       textDirection: textDirection ?? Directionality.of(context),
       fit: fit,
-      overflow: overflow,
     );
   }
 }
@@ -154,12 +159,11 @@ class CustomRenderStack extends RenderStack {
     AlignmentGeometry alignment,
     TextDirection textDirection,
     StackFit fit,
-    Overflow overflow,
   }) : super(
-            alignment: alignment,
-            textDirection: textDirection,
-            fit: fit,
-            overflow: overflow);
+          alignment: alignment,
+          textDirection: textDirection,
+          fit: fit,
+        );
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset position}) {

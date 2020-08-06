@@ -73,12 +73,12 @@ class FancyCard extends StatelessWidget {
               child: Placeholder(color: color),
             ),
             Text(
-              "STAY HOME!",
+              "Title",
               style: Theme.of(context).textTheme.display1,
             ),
             FlatButton(
-              child: Text("TAP ME!"),
-              onPressed: () => print("I WAS TAPPED"),
+              child: Text("Tap me!"),
+              onPressed: () => print("Button was tapped"),
             ),
           ],
         ));
