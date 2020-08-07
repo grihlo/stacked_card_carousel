@@ -27,12 +27,20 @@ A widget for creating a vertical carousel with stacked cards.
 
   ```
     StackedCardCarousel(
-        items: cards,  // Add your list of card widgets. Accepted type: List<Widget>
-        type: StackedCardCarouselType.fadeOutStack,  // Choose a type of cards stack. Default: cardsStack
-        initialOffset: 20.0,  // Set initial vertical top offset for cards. Default: 40.0
-        spaceBetweenItems: 200,  // Configure vertical space between items. Value start from top of a first item. Default: 400.0
-        applyTextScaleFactor: false,  // If set to true scales up space and position linearly according to text scale factor. Scaling down is not included. Default: true
-        pageController: PageController(),  // Use your own page controller. Default: PageController()
-        onPageChanged: (int pageIndex) => print(pageIndex),  // Listen to page index changes.
+        items: cards,
     );
   ```
+
+## 🎛 Attributes
+| Attribute | Data type | Description | Default |
+|--|--|--|--|
+| items | List<Widget> | List of card widgets. | - |
+| type | StackedCardCarouselType | A type of cards stack carousel. | cardsStack |
+| initialOffset | double | Initial vertical top offset for cards. | 40.0 |
+| spaceBetweenItems | double | Vertical space between items. Value start from top of a first item. | 400.0 |
+| applyTextScaleFactor | bool | If set to true scales up space and position linearly according to text scale factor. Scaling down is not included. | true |
+| pageController | PageController | Use it for your custom page controller. | PageController() |
+| onPageChanged | void Function(int pageIndex) | Listen to page index changes. | null |
+
+## 💻 Author
+Grigori Hlopkov - [GitHub](https://github.com/grihlo)
