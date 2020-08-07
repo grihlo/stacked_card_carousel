@@ -3,8 +3,8 @@
 A widget for creating a vertical carousel with stacked cards.
 
 <p align="center">
-<img src="example/assets/gifs/stacked_cards.gif" alt="cardsStack" title="StackedCardCarouselType.cardsStack" height="500"/>
-<img src="example/assets/gifs/fade_out_cards.gif" alt="fadeOutStack" title="StackedCardCarouselType.fadeOutStack" height="500"/>
+<img src="https://raw.githubusercontent.com/grihlo/stacked_card_carousel/master/example/assets/gifs/stacked_cards.gif" alt="cardsStack" title="StackedCardCarouselType.cardsStack" height="500"/>
+<img src="https://raw.githubusercontent.com/grihlo/stacked_card_carousel/master/example/assets/gifs/fade_out_cards.gif" alt="fadeOutStack" title="StackedCardCarouselType.fadeOutStack" height="500"/>
 </p>
 
 ## 📱 Usage

@@ -1,6 +1,6 @@
 name: stacked_card_carousel
 description: A widget for creating a vertical carousel with stacked cards.
-version: 0.0.2
+version: 0.0.2+1
 homepage: https://github.com/grihlo/stacked_card_carousel
 
 environment:
