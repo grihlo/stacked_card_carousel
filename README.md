@@ -7,19 +7,6 @@ A widget for creating a vertical carousel with stacked cards.
 <img src="example/assets/gifs/fade_out_cards.gif" alt="fadeOutStack" title="StackedCardCarouselType.fadeOutStack" height="500"/>
 </p>
 
-## ⚙️ Installation
-
-1. Add package to your pubspec.yaml
-  ```
-  dependencies:
-    stacked_card_carousel: ^0.0.2
-  
-  ```
-2. Get the package from pub:
-
-  ```
-  flutter packages get
-  ```
 ## 📱 Usage
 
 1. Import package in your file
