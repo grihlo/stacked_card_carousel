@@ -75,7 +75,7 @@ class FancyCard extends StatelessWidget {
     return Card(
       elevation: 4.0,
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             Container(
@@ -88,7 +88,7 @@ class FancyCard extends StatelessWidget {
               style: Theme.of(context).textTheme.headline5,
             ),
             OutlineButton(
-              child: Text("Learn more"),
+              child: const Text("Learn more"),
               onPressed: () => print("Button was tapped"),
             ),
           ],

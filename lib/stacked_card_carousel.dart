@@ -20,16 +20,16 @@ import 'package:flutter/rendering.dart';
 ///
 /// `initialOffset` is initial vertical top offset for cards.
 ///
-/// `spaceBetweenItems` Vertical space between items. Value start from top of
+/// `spaceBetweenItems` is vertical space between items. Value start from top of
 /// a first item. Choose a value that is related to your card size.
 /// To make it responsive use `MediaQuery.of(context).size.height` * percentage.
 ///
-/// `applyTextScaleFactor` If set to true scales up space and position linearly
+/// `applyTextScaleFactor` if set to true scales up space and position linearly
 /// according to text scale factor. Scaling down is not included.
 ///
-/// `pageController` Use it for your custom page controller.
+/// `pageController` ise it for your custom page controller.
 ///
-/// `onPageChanged` Listen to page index changes.
+/// `onPageChanged` listen to page index changes.
 class StackedCardCarousel extends StatefulWidget {
   StackedCardCarousel({
     @required List<Widget> items,
