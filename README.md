@@ -12,7 +12,7 @@ A widget for creating a vertical carousel with stacked cards.
 1. Add package to your pubspec.yaml
   ```
   dependencies:
-    stacked_card_carousel: ^0.0.1
+    stacked_card_carousel: ^0.0.2
   
   ```
 2. Get the package from pub:
