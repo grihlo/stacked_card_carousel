@@ -1,5 +1,5 @@
 name: stacked_card_carousel
-description: Vertical carousel widget with stacked cards.
+description: A widget for creating a vertical carousel with stacked cards.
 version: 0.0.1
 author: Grigori Hlopkov
 homepage: https://github.com/grihlo/stacked_card_carousel
