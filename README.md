@@ -3,8 +3,8 @@
 A widget for creating a vertical carousel with stacked cards.
 
 <p align="center">
-<img src="example/assets/gifs/stacked_cards.gif" title="StackedCardCarouselType.cardsStack" height="500"/>
-<img src="example/assets/gifs/fade_out_cards.gif" title="StackedCardCarouselType.fadeOutStack" height="500"/>
+<img src="https://media.giphy.com/media/RKB0n6O54q1yacqFVa/source.gif" title="StackedCardCarouselType.cardsStack" height="500"/>
+<img src="https://media.giphy.com/media/U5bOWHmsepvhmlNkWk/source.gif" title="StackedCardCarouselType.fadeOutStack" height="500"/>
 </p>
 
 ## ⚙️ Installation
