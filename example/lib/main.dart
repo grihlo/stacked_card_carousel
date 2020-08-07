@@ -7,11 +7,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Stacked card carousel',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Stacked card carousel'),
     );
   }
 }
@@ -22,22 +22,28 @@ class MyHomePage extends StatelessWidget {
 
   final List<Widget> fancyCards = [
     FancyCard(
-      color: Colors.green,
+      image: Image.asset("assets/pluto-done.png"),
+      title: "Say hello to planets!",
     ),
     FancyCard(
-      color: Colors.orange,
+      image: Image.asset("assets/pluto-fatal-error.png"),
+      title: "Don't be sad!",
     ),
     FancyCard(
-      color: Colors.blue,
+      image: Image.asset("assets/pluto-coming-soon.png"),
+      title: "Go for a walk!",
     ),
     FancyCard(
-      color: Colors.red,
+      image: Image.asset("assets/pluto-sign-up.png"),
+      title: "Try teleportation!",
     ),
     FancyCard(
-      color: Colors.green,
+      image: Image.asset("assets/pluto-waiting.png"),
+      title: "Enjoy your coffee!",
     ),
     FancyCard(
-      color: Colors.purple,
+      image: Image.asset("assets/pluto-welcome.png"),
+      title: "Play with your cat!",
     ),
   ];
 
@@ -55,32 +61,39 @@ class MyHomePage extends StatelessWidget {
 }
 
 class FancyCard extends StatelessWidget {
-  const FancyCard({Key key, this.color}) : super(key: key);
+  const FancyCard({
+    Key key,
+    this.image,
+    this.title,
+  }) : super(key: key);
 
-  final Color color;
+  final Image image;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        clipBehavior: Clip.antiAlias,
-        elevation: 10.0,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+    return Card(
+      elevation: 4.0,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             Container(
               width: 250,
-              height: 300,
-              child: Placeholder(color: color),
+              height: 250,
+              child: image,
             ),
             Text(
-              "Title",
-              style: Theme.of(context).textTheme.display1,
+              title,
+              style: Theme.of(context).textTheme.headline5,
             ),
-            FlatButton(
-              child: Text("Tap me!"),
+            OutlineButton(
+              child: Text("Learn more"),
               onPressed: () => print("Button was tapped"),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

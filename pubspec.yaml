@@ -1,8 +1,8 @@
 name: stacked_card_carousel
-description: Animated carousel widget with stacked cards.
+description: Vertical carousel widget with stacked cards.
 version: 0.0.1
 author: Grigori Hlopkov
-homepage:
+homepage: https://github.com/grihlo/stacked_card_carousel
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
