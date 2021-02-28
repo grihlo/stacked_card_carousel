@@ -157,7 +157,6 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     ).toList();
 
     return Stack(
-        overflow: Overflow.clip,
         alignment: Alignment.center,
         fit: StackFit.passthrough,
         children: _positionedCards);
