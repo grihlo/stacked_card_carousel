@@ -31,14 +31,14 @@ import 'package:flutter/rendering.dart';
 /// `onPageChanged` listen to page index changes.
 class StackedCardCarousel extends StatefulWidget {
   StackedCardCarousel({
-    @required List<Widget> items,
+    required List<Widget> items,
     StackedCardCarouselType type = StackedCardCarouselType.cardsStack,
     double initialOffset = 40.0,
     double spaceBetweenItems = 400,
     bool applyTextScaleFactor = true,
-    PageController pageController,
-    OnPageChanged onPageChanged,
-  })  : assert(items != null && items.isNotEmpty),
+    PageController? pageController,
+    OnPageChanged? onPageChanged,
+  })  : assert(items.isNotEmpty),
         _items = items,
         _type = type,
         _initialOffset = initialOffset,
@@ -53,7 +53,7 @@ class StackedCardCarousel extends StatefulWidget {
   final double _spaceBetweenItems;
   final bool _applyTextScaleFactor;
   final PageController _pageController;
-  final OnPageChanged _onPageChanged;
+  final OnPageChanged? _onPageChanged;
 
   @override
   _StackedCardCarouselState createState() => _StackedCardCarouselState();
@@ -67,7 +67,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     widget._pageController.addListener(() {
       if (mounted) {
         setState(() {
-          _pageValue = widget._pageController.page;
+          _pageValue = widget._pageController.page!;
         });
       }
     });
@@ -167,7 +167,8 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 /// To allow all gestures detections to go through
 /// https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
 class ClickThroughStack extends Stack {
-  ClickThroughStack({List<Widget> children}) : super(children: children);
+  ClickThroughStack({required List<Widget> children})
+      : super(children: children);
 
   @override
   ClickThroughRenderStack createRenderObject(BuildContext context) {
@@ -181,9 +182,9 @@ class ClickThroughStack extends Stack {
 
 class ClickThroughRenderStack extends RenderStack {
   ClickThroughRenderStack({
-    AlignmentGeometry alignment,
-    TextDirection textDirection,
-    StackFit fit,
+    required AlignmentGeometry alignment,
+    TextDirection? textDirection,
+    required StackFit fit,
   }) : super(
           alignment: alignment,
           textDirection: textDirection,
@@ -191,7 +192,7 @@ class ClickThroughRenderStack extends RenderStack {
         );
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
+  bool hitTestChildren(BoxHitTestResult result, {Offset? position}) {
     bool stackHit = false;
 
     final List<RenderBox> children = getChildrenAsList();
@@ -202,7 +203,7 @@ class ClickThroughRenderStack extends RenderStack {
 
       final bool childHit = result.addWithPaintOffset(
         offset: childParentData.offset,
-        position: position,
+        position: position!,
         hitTest: (BoxHitTestResult result, Offset transformed) {
           assert(transformed == position - childParentData.offset);
           return child.hitTest(result, position: transformed);
