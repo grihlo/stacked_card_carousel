@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   final List<Widget> fancyCards = [
@@ -54,7 +54,10 @@ class MyHomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: StackedCardCarousel(
+        type: StackedCardCarouselType.cardsStack,
+        scrollDirection: Axis.horizontal,
         items: fancyCards,
+        cardAlignment: CardAlignment.center,
       ),
     );
   }
@@ -62,9 +65,9 @@ class MyHomePage extends StatelessWidget {
 
 class FancyCard extends StatelessWidget {
   const FancyCard({
-    Key key,
-    this.image,
-    this.title,
+    Key? key,
+    required this.image,
+    required this.title,
   }) : super(key: key);
 
   final Image image;

@@ -29,6 +29,13 @@ import 'package:flutter/rendering.dart';
 /// `pageController` ise it for your custom page controller.
 ///
 /// `onPageChanged` listen to page index changes.
+///
+/// `scrollDirection` sets the direction of the card stacking (default is vertical).
+///
+/// `cardAlignment` CardAlignment.start locks the start of the stack,
+///     CardAlignment.center keeps the top card in the center.
+///     Default is CardAlignment.start
+///     ONLY applies to StackeCardCarouselType.cardsStack
 class StackedCardCarousel extends StatefulWidget {
   StackedCardCarousel({
     required List<Widget> items,
@@ -38,6 +45,8 @@ class StackedCardCarousel extends StatefulWidget {
     bool applyTextScaleFactor = true,
     PageController? pageController,
     OnPageChanged? onPageChanged,
+    this.scrollDirection = Axis.vertical,
+    this.cardAlignment = CardAlignment.start
   })  : assert(items.isNotEmpty),
         _items = items,
         _type = type,
@@ -54,6 +63,8 @@ class StackedCardCarousel extends StatefulWidget {
   final bool _applyTextScaleFactor;
   final PageController _pageController;
   final OnPageChanged? _onPageChanged;
+  final Axis scrollDirection;
+  final CardAlignment cardAlignment;
 
   @override
   _StackedCardCarouselState createState() => _StackedCardCarouselState();
@@ -76,7 +87,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
       children: <Widget>[
         _stackedCards(context),
         PageView.builder(
-          scrollDirection: Axis.vertical,
+          scrollDirection: widget.scrollDirection,
           controller: widget._pageController,
           itemCount: widget._items.length,
           onPageChanged: widget._onPageChanged,
@@ -90,6 +101,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 
   Widget _stackedCards(BuildContext context) {
     double textScaleFactor = 1.0;
+    bool vertical = widget.scrollDirection == Axis.vertical;
     if (widget._applyTextScaleFactor) {
       final double mediaQueryFactor = MediaQuery.of(context).textScaleFactor;
       if (mediaQueryFactor > 1.0) {
@@ -114,10 +126,11 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
               opacity = factor < 0.0 ? 0.0 : pow(factor, 1.5).toDouble();
               scale = factor < 0.0 ? 0.0 : pow(factor, 0.1).toDouble();
             }
-            return Positioned.fill(
-              top: -position,
+            return Positioned(
+              top: vertical ? - position : null,
+              left: vertical ? null : - position,
               child: Align(
-                alignment: Alignment.topCenter,
+                alignment: vertical ? Alignment.topCenter : Alignment.centerLeft,
                 child: Wrap(
                   children: <Widget>[
                     Transform.scale(
@@ -134,14 +147,20 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
           case StackedCardCarouselType.cardsStack:
           default:
             double scale = 1.0;
-            if (item.key - _pageValue < 0) {
+            if (item.key < _pageValue) {
               final double factor = 1 + (item.key - _pageValue);
               scale = 0.95 + (factor * 0.1 / 2);
             }
-            return Positioned.fill(
-              top: -position + (20.0 * item.key),
+            double shift = 20.0*item.key;
+            if (widget.cardAlignment == CardAlignment.center) {
+              // Shift back cards based on depth
+              shift = 20.0 * (item.key - _pageValue);
+            }
+            return Positioned(
+              top: vertical ? - position + shift : null,
+              left: vertical ? null : - position + shift ,
               child: Align(
-                alignment: Alignment.topCenter,
+                alignment: vertical ? Alignment.topCenter : Alignment.centerLeft,
                 child: Wrap(
                   children: <Widget>[
                     Transform.scale(
@@ -223,6 +242,11 @@ final PageController _defaultPageController = PageController();
 enum StackedCardCarouselType {
   cardsStack,
   fadeOutStack,
+}
+
+enum CardAlignment {
+  start,
+  center
 }
 
 typedef OnPageChanged = void Function(int pageIndex);
