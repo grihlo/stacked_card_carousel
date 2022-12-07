@@ -20,7 +20,7 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
 
-  final List<Widget> fancyCards = [
+  final List<Widget> fancyCards = <Widget>[
     FancyCard(
       image: Image.asset("assets/pluto-done.png"),
       title: "Say hello to planets!",
@@ -87,7 +87,7 @@ class FancyCard extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.headline5,
             ),
-            OutlineButton(
+            OutlinedButton(
               child: const Text("Learn more"),
               onPressed: () => print("Button was tapped"),
             ),
