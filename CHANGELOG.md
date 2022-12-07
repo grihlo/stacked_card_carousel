@@ -1,3 +1,7 @@
+## [0.0.4] - 07.12.2022
+
+* Update project and release nullsafety version
+
 ## [0.0.3-nullsafety] - 28.02.2021
 
 * Migrate to null safety
