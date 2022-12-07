@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({super.key, required this.title});
   final String title;
 
   final List<Widget> fancyCards = <Widget>[
@@ -62,10 +62,10 @@ class MyHomePage extends StatelessWidget {
 
 class FancyCard extends StatelessWidget {
   const FancyCard({
-    Key key,
-    this.image,
-    this.title,
-  }) : super(key: key);
+    super.key,
+    required this.image,
+    required this.title,
+  });
 
   final Image image;
   final String title;
