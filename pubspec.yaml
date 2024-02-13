@@ -4,7 +4,7 @@ version: 0.0.4
 homepage: https://github.com/grihlo/stacked_card_carousel
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,5 +13,3 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-flutter:

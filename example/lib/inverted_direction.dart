@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Stacked card carousel',
+      title: 'Stacked card carousel - Inverted direction',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
@@ -55,6 +55,8 @@ class MyHomePage extends StatelessWidget {
       ),
       body: StackedCardCarousel(
         items: fancyCards,
+        inverse: true,
+        initialOffset: 100,
       ),
     );
   }
