@@ -38,6 +38,7 @@ class StackedCardCarousel extends StatefulWidget {
     bool applyTextScaleFactor = true,
     PageController? pageController,
     OnPageChanged? onPageChanged,
+    bool inverse = false,
   })  : assert(items.isNotEmpty),
         _items = items,
         _type = type,
@@ -45,7 +46,8 @@ class StackedCardCarousel extends StatefulWidget {
         _spaceBetweenItems = spaceBetweenItems,
         _applyTextScaleFactor = applyTextScaleFactor,
         _pageController = pageController ?? _defaultPageController,
-        _onPageChanged = onPageChanged;
+        _onPageChanged = onPageChanged,
+        _inverse = inverse;
 
   final List<Widget> _items;
   final StackedCardCarouselType _type;
@@ -54,6 +56,7 @@ class StackedCardCarousel extends StatefulWidget {
   final bool _applyTextScaleFactor;
   final PageController _pageController;
   final OnPageChanged? _onPageChanged;
+  final bool _inverse;
 
   @override
   _StackedCardCarouselState createState() => _StackedCardCarouselState();
@@ -61,6 +64,8 @@ class StackedCardCarousel extends StatefulWidget {
 
 class _StackedCardCarouselState extends State<StackedCardCarousel> {
   double _pageValue = 0.0;
+
+  int get _signInverse => widget._inverse ? -1 : 1;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +88,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
           itemBuilder: (BuildContext context, int index) {
             return Container();
           },
+          reverse: widget._inverse,
         ),
       ],
     );
@@ -97,14 +103,21 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
       }
     }
 
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     final List<Widget> _positionedCards = widget._items.asMap().entries.map(
       (MapEntry<int, Widget> item) {
-        double position = -widget._initialOffset;
+        double position = -widget._initialOffset * _signInverse;
+        if (widget._inverse) {
+          position -= screenHeight - widget._spaceBetweenItems;
+        }
         if (_pageValue < item.key) {
           position += (_pageValue - item.key) *
               widget._spaceBetweenItems *
-              textScaleFactor;
+              textScaleFactor *
+              _signInverse;
         }
+
         switch (widget._type) {
           case StackedCardCarouselType.fadeOutStack:
             double opacity = 1.0;
@@ -139,7 +152,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
               scale = 0.95 + (factor * 0.1 / 2);
             }
             return Positioned.fill(
-              top: -position + (20.0 * item.key),
+              top: -position + (20.0 * item.key) * _signInverse,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Wrap(
@@ -166,7 +179,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 /// To allow all gestures detections to go through
 /// https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
 class ClickThroughStack extends Stack {
-  ClickThroughStack({required List<Widget> children})
+  const ClickThroughStack({required List<Widget> children})
       : super(children: children);
 
   @override
